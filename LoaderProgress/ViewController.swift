@@ -8,13 +8,16 @@
 
 import UIKit
 
-let shapeLayer = CAShapeLayer()
+var shapeLayer: CAShapeLayer!
+var shapeTrack: CAShapeLayer!
+var bouncingLayer: CAShapeLayer!
 
 class ViewController: UIViewController, URLSessionDownloadDelegate {
     
     let downloadLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 32)
+        label.textColor = UIColor.white
         label.textAlignment = .center
         label.text = "Start"
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -26,56 +29,78 @@ class ViewController: UIViewController, URLSessionDownloadDelegate {
     }
     
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
+    func circleLayer(fillColor: UIColor, strokeColor: UIColor) -> CAShapeLayer {
         let circularPath = UIBezierPath(arcCenter: .zero, radius: 100, startAngle: 0, endAngle: CGFloat.pi * 2, clockwise: true)
-        
-        // shape layer
-        shapeLayer.path = circularPath.cgPath
-        shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.strokeColor = UIColor.red.cgColor
-        shapeLayer.lineWidth = 10
-        shapeLayer.strokeEnd = 0
-        shapeLayer.lineCap = .round
-        shapeLayer.position = view.center
-        shapeLayer.transform = CATransform3DMakeRotation(-CGFloat.pi / 2, 0, 0, 1)
-        
-        // shape track
-        let shapeTrack = CAShapeLayer()
-        shapeTrack.path = circularPath.cgPath
-        shapeTrack.lineWidth = 10
-        shapeTrack.strokeColor = UIColor.lightGray.cgColor
-        shapeTrack.fillColor = UIColor.clear.cgColor
-        shapeTrack.position = view.center
-        
-        
-        // add them all
-        view.layer.addSublayer(shapeTrack)
-        view.layer.addSublayer(shapeLayer)
-        view.addSubview(downloadLabel)
-        
-        // label
+        let layer =  CAShapeLayer()
+        layer.path = circularPath.cgPath
+        layer.fillColor = fillColor.cgColor
+        layer.strokeColor = strokeColor.cgColor
+        layer.lineCap = .round
+        layer.lineWidth = 20
+        layer.position = view.center
+        return layer
+    }
+    
+    fileprivate func setupViewComponents() {
+//        label
         downloadLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         downloadLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         downloadLabel.widthAnchor.constraint(equalToConstant: 100).isActive = true
         downloadLabel.heightAnchor.constraint(equalToConstant: 100).isActive = true
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = UIColor.backgroundColor
 
-        // user action
+        
+//        shape layer
+        shapeLayer = circleLayer(fillColor: UIColor.clear, strokeColor: UIColor.outlineStrokeColor)
+        shapeLayer.strokeEnd = 0
+        shapeLayer.transform = CATransform3DMakeRotation(-CGFloat.pi / 2, 0, 0, 1)
+        
+//        shape track
+        shapeTrack = circleLayer(fillColor: UIColor.clear, strokeColor: UIColor.trackStrokeColor)
+        
+//        bouncing layer
+        bouncingLayer = circleLayer(fillColor: UIColor.clear, strokeColor: UIColor.pulsatingFillColor)
+        pulsatingAnimation()
+        
+        
+//        add view components
+        view.layer.addSublayer(bouncingLayer)
+        view.layer.addSublayer(shapeTrack)
+        view.layer.addSublayer(shapeLayer)
+        view.addSubview(downloadLabel)
+        setupViewComponents()
+
+//        user action
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleClickOnView)))
+        setNotifications()
         
     }
     
-    let urlString = "https://firebasestorage.googleapis.com/v0/b/firestorechat-e64ac.appspot.com/o/intermediate_training_rec.mp4?alt=media&token=e20261d0-7219-49d2-b32d-367e1606500c"
-    
-    fileprivate func animateCircle() {
-        let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
-        basicAnimation.duration = 2
-        basicAnimation.toValue = 1
-        basicAnimation.fillMode = CAMediaTimingFillMode.forwards
-        basicAnimation.isRemovedOnCompletion = false
-        shapeLayer.add(basicAnimation, forKey: "urSoBasic")
+    private func setNotifications(){
+        NotificationCenter.default.addObserver(self, selector: #selector(pulsatingAnimation), name: UIApplication.willEnterForegroundNotification
+            , object: nil)
     }
+    
+    @objc private func pulsatingAnimation(){
+        let anim = CABasicAnimation(keyPath: "transform.scale")
+        anim.toValue = 1.2
+        anim.duration = 0.5
+        anim.autoreverses = true
+        anim.repeatCount = Float.infinity
+        anim.timingFunction = CAMediaTimingFunction(name: .easeOut)
+        
+        bouncingLayer.add(anim, forKey: "pulsing")
+    }
+    
+    let urlString = "https://firebasestorage.googleapis.com/v0/b/firestorechat-e64ac.appspot.com/o/intermediate_training_rec.mp4?alt=media&token=e20261d0-7219-49d2-b32d-367e1606500c"
     
     @objc private func handleClickOnView(){
         startDownloadURL()

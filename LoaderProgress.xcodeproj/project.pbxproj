@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		321524FF22CE84FA008B5785 /* Extenison.swift in Sources */ = {isa = PBXBuildFile; fileRef = 321524FE22CE84FA008B5785 /* Extenison.swift */; };
 		32DF31D222CBED9700A6BE32 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DF31D122CBED9700A6BE32 /* AppDelegate.swift */; };
 		32DF31D422CBED9700A6BE32 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DF31D322CBED9700A6BE32 /* ViewController.swift */; };
 		32DF31D722CBED9800A6BE32 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32DF31D522CBED9800A6BE32 /* Main.storyboard */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		321524FE22CE84FA008B5785 /* Extenison.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extenison.swift; sourceTree = "<group>"; };
 		32DF31CE22CBED9700A6BE32 /* LoaderProgress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoaderProgress.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		32DF31D122CBED9700A6BE32 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		32DF31D322CBED9700A6BE32 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 				32DF31DB22CBED9B00A6BE32 /* Assets.xcassets */,
 				32DF31DD22CBED9B00A6BE32 /* LaunchScreen.storyboard */,
 				32DF31E022CBED9B00A6BE32 /* Info.plist */,
+				321524FE22CE84FA008B5785 /* Extenison.swift */,
 				32DF31D822CBED9800A6BE32 /* LoaderProgress.xcdatamodeld */,
 			);
 			path = LoaderProgress;
@@ -141,6 +144,7 @@
 				32DF31D422CBED9700A6BE32 /* ViewController.swift in Sources */,
 				32DF31DA22CBED9800A6BE32 /* LoaderProgress.xcdatamodeld in Sources */,
 				32DF31D222CBED9700A6BE32 /* AppDelegate.swift in Sources */,
+				321524FF22CE84FA008B5785 /* Extenison.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
